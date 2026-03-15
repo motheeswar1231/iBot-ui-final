@@ -1,0 +1,5 @@
+{
+  "name": "Invoice Intelligence",
+  "description": "An intelligent invoice management application that uses AI to extract data from uploaded invoice documents.",
+  "requestFramePermissions": []
+}
