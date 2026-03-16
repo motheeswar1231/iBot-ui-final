@@ -50,7 +50,17 @@
           <tbody>
             @for (invoice of filteredInvoices(); track invoice.id) {
             <tr>
-              <td class="p-3 fw-medium text-dark text-nowrap">{{ invoice.systemInvoiceNumber}}</td>
+              <td class="p-3 fw-medium text-nowrap">
+
+                @if(invoice.invoiceDetails?.length > 0){
+                <a href="javascript:void(0)" class="invoice-link" (click)="openInvoiceDetails(invoice)">
+                  {{ invoice.systemInvoiceNumber || invoice.invoiceNumber || 'View Details' }}
+                </a>
+                } @else {
+                {{ invoice.systemInvoiceNumber || invoice.invoiceNumber }}
+                }
+
+              </td>
               <td class="p-3">{{ invoice.id }}</td>
               <td class="p-3">{{ invoice.invoiceDate }}</td>
               <td class="p-3">{{ invoice.seller }}</td>
@@ -76,6 +86,69 @@
       </div>
     </div>
   </div>
+
+
+  @if (isDetailsModalVisible()) {
+
+  <div class="modal-backdrop fade show"></div>
+
+  <div class="modal fade show d-block" tabindex="-1" (click)="closeInvoiceDetails()">
+    <div class="modal-dialog modal-lg modal-dialog-centered" (click)="$event.stopPropagation()">
+
+      <div class="modal-content shadow-lg">
+
+        <div class="modal-header">
+          <h5 class="modal-title">
+            Invoice Details - {{ selectedInvoice()?.systemInvoiceNumber }}
+          </h5>
+
+          <button class="btn-close" (click)="closeInvoiceDetails()"></button>
+        </div>
+
+        <div class="modal-body">
+
+          <div class="table-responsive">
+
+            <table class="table table-bordered table-hover">
+
+              <thead class="table-light">
+                <tr>
+                  <th>Item Name</th>
+                  <th>Quantity</th>
+                  <th>Amount</th>
+                </tr>
+              </thead>
+
+              <tbody>
+
+                @for(item of selectedInvoice()?.invoiceDetails; track item){
+
+                <tr>
+                  <td>{{ item.name }}</td>
+                  <td>{{ item.quantity }}</td>
+                  <td>{{ item.amount }}</td>
+                </tr>
+
+                }
+
+              </tbody>
+
+            </table>
+
+          </div>
+
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn btn-secondary" (click)="closeInvoiceDetails()">Close</button>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  }
 
   <!-- Upload Modal -->
   @if (isModalVisible()) {
@@ -155,5 +228,15 @@
     background-color: var(--bs-light-bg-subtle) !important;
     border-color: var(--bs-warning) !important;
     transition: background-color 0.2s, border-color 0.2s;
+  }
+
+  .invoice-link {
+    color: #6c757d;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  .invoice-link:hover {
+    color: #495057;
   }
 </style>

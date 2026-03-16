@@ -19,4 +19,5 @@ export interface InvoiceData {
   buyerName: string;
   items: InvoiceItem[];
   totalAmount: number;
+   invoiceDetails?: InvoiceItem[];  
 }

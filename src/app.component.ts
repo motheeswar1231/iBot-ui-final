@@ -120,4 +120,19 @@ export class AppComponent {
   trackByInvoiceNumber(index: number, invoice: InvoiceData) {
   return invoice.invoiceNumber;
 }
+
+selectedInvoice = signal<InvoiceData | null>(null);
+isDetailsModalVisible = signal<boolean>(false);
+
+openInvoiceDetails(invoice: InvoiceData) {
+  if (invoice.invoiceDetails && invoice.invoiceDetails.length > 0) {
+    this.selectedInvoice.set(invoice);
+    this.isDetailsModalVisible.set(true);
+  }
+}
+
+closeInvoiceDetails() {
+  this.selectedInvoice.set(null);
+  this.isDetailsModalVisible.set(false);
+}
 }
