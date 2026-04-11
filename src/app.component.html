@@ -41,7 +41,7 @@
               <th scope="col" class="p-3">Invoice #</th>
               <th scope="col" class="p-3">Order ID</th>
               <th scope="col" class="p-3">Date</th>
-              <th scope="col" class="p-3">Buyer Name</th>
+              <th scope="col" class="p-3">Company Name</th>
               <!-- <th scope="col" class="p-3">Items</th> -->
               <th scope="col" class="p-3 ">Total Amount</th>
             </tr>
@@ -63,7 +63,7 @@
               </td>
               <td class="p-3">{{ invoice.id }}</td>
               <td class="p-3">{{ invoice.invoiceDate }}</td>
-              <td class="p-3">{{ invoice.seller }}</td>
+              <td class="p-3">{{ invoice.companyName }}</td>
               <!-- <td class="p-3">{{ invoice.items.length }}</td>-->
               <td class="p-3">{{ invoice.totalAmount }}</td>
             </tr>
@@ -113,8 +113,10 @@
 
               <thead class="table-light">
                 <tr>
+                  <th>Order ID</th>
                   <th>Item Name</th>
                   <th>Quantity</th>
+                  <th>Rate</th>
                   <th>Amount</th>
                 </tr>
               </thead>
@@ -124,8 +126,10 @@
                 @for(item of selectedInvoice()?.invoiceDetails; track item){
 
                 <tr>
-                  <td>{{ item.name }}</td>
+                  <td>{{ item.orderId }}</td>
+                  <td>{{ item.productName }}</td>
                   <td>{{ item.quantity }}</td>
+                  <td>{{ item.rate }}</td>
                   <td>{{ item.amount }}</td>
                 </tr>
 
