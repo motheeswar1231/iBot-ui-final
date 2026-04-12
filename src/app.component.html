@@ -32,60 +32,49 @@
         </div>
       </div>
 
-      <!-- Invoice Table -->
-      <div class="table-responsive">
-        @if (filteredInvoices().length > 0) {
-        <table class="table table-hover align-middle">
-          <thead class="table-light">
-            <tr>
-              <th scope="col" class="p-3">Invoice #</th>
-              <th scope="col" class="p-3">Order ID</th>
-              <th scope="col" class="p-3">Date</th>
-              <th scope="col" class="p-3">Company Name</th>
-              <!-- <th scope="col" class="p-3">Items</th> -->
-              <th scope="col" class="p-3 ">Total Amount</th>
-            </tr>
-          </thead>
-          <tbody>
-          <tbody>
-            @for (invoice of filteredInvoices(); track invoice.id) {
-            <tr>
-              <td class="p-3 fw-medium text-nowrap">
+     <div class="table-responsive">
+  @if (invoices().length > 0) {
+    <table class="table table-hover align-middle">
+      <thead class="table-light">
+        <tr>
+          <th class="p-3">Invoice #</th>
+          <th class="p-3">Order ID</th>
+          <th class="p-3">Date</th>
+          <th class="p-3">Company Name</th>
+          <th class="p-3">Total Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (invoice of invoices(); track invoice.id) {
+          <tr>
+            <td class="p-3 fw-medium text-nowrap">
 
-                @if(invoice.invoiceDetails?.length > 0){
-                <a href="javascript:void(0)" class="invoice-link" (click)="openInvoiceDetails(invoice)">
-                  {{ invoice.systemInvoiceNumber || invoice.invoiceNumber || 'View Details' }}
+              @if(invoice.invoiceDetails?.length > 0){
+                <a href="javascript:void(0)"
+                   class="invoice-link"
+                   (click)="openInvoiceDetails(invoice)">
+                  {{ invoice.systemInvoiceNumber || invoice.invoiceNumber }}
                 </a>
-                } @else {
+              } @else {
                 {{ invoice.systemInvoiceNumber || invoice.invoiceNumber }}
-                }
+              }
 
-              </td>
-              <td class="p-3">{{ invoice.id }}</td>
-              <td class="p-3">{{ invoice.invoiceDate }}</td>
-              <td class="p-3">{{ invoice.companyName }}</td>
-              <!-- <td class="p-3">{{ invoice.items.length }}</td>-->
-              <td class="p-3">{{ invoice.totalAmount }}</td>
-            </tr>
-            }
-          </tbody>
-        </table>
-        } @else {
-        <div class="text-center p-5 border-2 border-dashed rounded-3">
-          @if(invoices().length > 0) {
-          <i class="fa-solid fa-filter-circle-xmark fs-1 text-muted"></i>
-          <h3 class="mt-4 h5">No Invoices Found</h3>
-          <p class="mt-1 text-muted">Your search for "{{filterQuery()}}" did not match any invoices.</p>
-          } @else {
-          <i class="fa-solid fa-file-invoice-dollar fs-1 text-muted"></i>
-          <h3 class="mt-4 h5">No invoices processed yet</h3>
-          <p class="mt-1 text-muted">Click "Process New Invoice" to get started.</p>
-          }
-        </div>
+            </td>
+
+            <td class="p-3">{{ invoice.id }}</td>
+            <td class="p-3">{{ invoice.invoiceDate }}</td>
+            <td class="p-3">{{ invoice.companyName }}</td>
+            <td class="p-3">{{ invoice.totalAmount }}</td>
+          </tr>
         }
-      </div>
+      </tbody>
+    </table>
+  } @else {
+    <div class="text-center p-5">
+      <h5>No Invoices Found</h5>
     </div>
-  </div>
+  }
+</div>
 
 
   @if (isDetailsModalVisible()) {

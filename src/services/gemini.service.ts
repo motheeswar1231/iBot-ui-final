@@ -25,4 +25,9 @@ export class InvoiceService {
 
     return this.http.post(`${this.apiUrl}/upload`, formData);
   }
+
+ /** Get invoice by invoice number */
+getInvoiceBySearch(value: string): Observable<InvoiceData[]> {
+  return this.http.get<InvoiceData[]>(`${this.apiUrl}/invoices/search/${value}`);
+}
 }

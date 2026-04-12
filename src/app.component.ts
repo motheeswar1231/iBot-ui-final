@@ -19,17 +19,17 @@ export class AppComponent {
   filterQuery = signal<string>('');
 
   filteredInvoices = computed(() => {
-    const query = this.filterQuery().toLowerCase().trim();
-    if (!query) {
-      return this.invoices();
-    }
-    return this.invoices().filter(invoice =>
-      invoice.invoiceNumber.toLowerCase().includes(query) ||
-      invoice.orderId?.toLowerCase().includes(query) ||
-      invoice.buyerName?.toLowerCase().includes(query) ||
-      invoice.invoiceDate.toLowerCase().includes(query)
-    );
-  });
+  const query = this.filterQuery().toLowerCase().trim();
+  if (!query) {
+    return this.invoices();
+  }
+  return this.invoices().filter(invoice =>
+    invoice.invoiceNumber.toLowerCase().includes(query) ||
+    invoice.orderId?.toLowerCase().includes(query) ||
+    invoice.buyerName?.toLowerCase().includes(query) ||
+    invoice.invoiceDate.toLowerCase().includes(query)
+  );
+});
 
   selectedFileSize = computed(() => {
     const file = this.selectedFile();
@@ -68,10 +68,34 @@ export class AppComponent {
     }
   }
 
-  onFilterChange(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    this.filterQuery.set(input.value);
+ onFilterChange(event: Event): void {
+  const input = event.target as HTMLInputElement;
+  const value = input.value.trim();
+
+  this.filterQuery.set(value);
+
+  if (!value) {
+    this.loadInvoices();
+    return;
   }
+
+  this.invoiceService.getInvoiceBySearch(value).subscribe(
+    data => {
+      console.log("API RESPONSE:", data);
+
+      // ✅ Fix: ensure array
+      if (Array.isArray(data)) {
+        this.invoices.set(data);
+      } else {
+        this.invoices.set([data]); // fallback if backend sends object
+      }
+    },
+    error => {
+      console.error("Search error:", error);
+      this.invoices.set([]);
+    }
+  );
+}
 
   removeFile(event: MouseEvent): void {
     event.stopPropagation();
@@ -135,4 +159,6 @@ closeInvoiceDetails() {
   this.selectedInvoice.set(null);
   this.isDetailsModalVisible.set(false);
 }
+
+
 }
